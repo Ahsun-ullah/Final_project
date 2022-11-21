@@ -24,11 +24,8 @@ const Student_details = () => {
               </p>
             </div>
             <div className="h-8 w-40 p-1 content-center bg-slate-400 rounded-full">
-              <button onClick="" className="text-center">
-                <FontAwesomeIcon
-                  className=""
-                  icon={faTrashAlt}
-                ></FontAwesomeIcon>
+              <button className="text-center">
+                <FontAwesomeIcon icon={faTrashAlt}></FontAwesomeIcon>
               </button>
             </div>
           </div>
