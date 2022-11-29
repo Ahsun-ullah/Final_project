@@ -43,13 +43,18 @@ const Header = () => {
                 </Link>
               </li>
               <li>
-                <Link className="text-black text-xl" to="/Form">
+                <Link className="text-black text-xl" to="/Login">
                   Login form
                 </Link>
               </li>
               <li>
                 <Link className="text-black text-xl" to="/Register">
                   Register form
+                </Link>
+              </li>
+              <li>
+                <Link className="text-black text-xl" to="/TermsAndConditions">
+                T&C
                 </Link>
               </li>
             </ul>
@@ -86,7 +91,7 @@ const Header = () => {
               </Link>
             </li>
             <li>
-              <Link className="text-black text-xl" to="/Form">
+              <Link className="text-black text-xl" to="/Login">
                 Login form
               </Link>
             </li>

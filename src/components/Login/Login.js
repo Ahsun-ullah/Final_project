@@ -2,18 +2,27 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import Navbar from '../Navbar/Navbar'
 import loginImg from '../../Assets/loginImg.png'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useState } from 'react'
-import { signInWithEmailAndPassword, getAuth } from 'firebase/auth'
-import app from '../../firebase.init';
+import {
+  signInWithEmailAndPassword,
+  getAuth,
+  sendPasswordResetEmail,
+} from 'firebase/auth'
+import app from '../../firebase.init'
 
-const auth = getAuth(app);
 
-const Form = () => {
+
+
+const auth = getAuth(app)
+
+
+
+
+const Login = () => {
   //const [error, setError]=useState('');
-  const [email, setEmail]=useState('');
-  const [password, setPassword]=useState('');
-  
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
 
   const handleEmailBlur = (event) => {
     setEmail(event.target.value)
@@ -23,18 +32,29 @@ const Form = () => {
     setPassword(event.target.value)
   }
 
+  const handleRegister = () => {
+    <Login></Login>
+  }
+
+  const handlePasswordReset = () => {
+    sendPasswordResetEmail(auth, email).then(() => {
+      console.log('sent Password reset mail')
+    })
+    //.catch((error) => {
+    //setError(error.message);
+  }
+
   const handleSubmit = (event) => {
-    signInWithEmailAndPassword(auth, email, password)
-    .then(result =>{
-      const user = result.user;
-      console.log(user);
-      setEmail('');
-      setPassword('');
+    signInWithEmailAndPassword(auth, email, password).then((result) => {
+      const user = result.user
+      console.log(user)
+      setEmail('')
+      setPassword('')
     })
-    .catch((error) =>{
-      //setError(error.message);
-    })
-    event.preventDefault();
+    //.catch((error) => {
+    //setError(error.message);}
+
+    event.preventDefault()
   }
 
   return (
@@ -51,13 +71,17 @@ const Form = () => {
             Welcome to SAL! Login first.
           </p>
 
-          <form onSubmit={handleSubmit} className="space-y-4 space-x-0 max-w-[400px] w-full mx-auto bg-gray-900 p-12 rounded-lg ">
+          <form
+            onSubmit={handleSubmit}
+            className="space-y-4 space-x-0 max-w-[400px] w-full mx-auto bg-gray-900 p-12 rounded-lg "
+          >
             <h2 className="text-3xl text-gray-100 font-bold text-center">
               Login
             </h2>
             <div className="flex flex-col text-gray-100">
               <label>Email:</label>
-              <input onBlur={handleEmailBlur}
+              <input
+                onBlur={handleEmailBlur}
                 type="email"
                 className="rounded-md p-[2px] pl-2 text-gray-800 bg-gray-500 focus:border-blue-500 focus:bg-gray-200 focus:outline-none"
                 placeholder="Your Email"
@@ -67,7 +91,8 @@ const Form = () => {
 
             <div className="flex flex-col text-gray-100">
               <label>Password:</label>
-              <input onBlur={handlePassBlur}
+              <input
+                onBlur={handlePassBlur}
                 type="password"
                 className="rounded-md p-[2px] pl-2 text-gray-800 bg-gray-500 focus:border-blue-500 focus:bg-gray-200 focus:outline-none"
                 placeholder="Password"
@@ -80,9 +105,11 @@ const Form = () => {
                 <input type="checkbox" className="mr-2 bg-gray-500 " />
                 Remember Me.
               </p>
-              <span className="text-sm tracking-wide text-blue-500 underline">
-                Forgot password ?
-              </span>
+              <button onClick={handlePasswordReset} variant="Link">
+                <span className="text-sm tracking-wide text-blue-500 underline">
+                  Forgot password ?
+                </span>
+              </button>
             </div>
 
             <div className="mt-12 border-t">
@@ -110,9 +137,9 @@ const Form = () => {
               </button>
             </div>
 
-            <Link className="text-blue-500 underline">
-              <span>Create new account.?</span>
-            </Link>
+            <button className="text-blue-500 underline">
+              <Link to="/Register" onClick={handleRegister}>Create new account.?</Link>
+            </button>
           </form>
         </div>
       </div>
@@ -120,4 +147,4 @@ const Form = () => {
   )
 }
 
-export default Form
+export default Login

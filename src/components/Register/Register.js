@@ -1,14 +1,21 @@
 import React, { useState } from 'react'
 import Navbar from '../Navbar/Navbar'
 import registerImg from '../../Assets/registerImg.png'
-import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth'
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+} from 'firebase/auth'
 import app from '../../firebase.init'
+import Login from '../Login/Login'
+import TermsAndConditions from '../TermsAndConditions/TermsAndConditions'
+import { Link } from 'react-router-dom'
 
-const auth = getAuth(app);
+const auth = getAuth(app)
 
 const Register = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   //const [error, setError] = useState('');
 
   const handleEmailBlur = (event) => {
@@ -19,26 +26,33 @@ const Register = () => {
     setPassword(event.target.value)
   }
 
-  const verifyEmail = () =>{
-    sendEmailVerification(auth.currentUser)
-    .then(() =>{
-      console.log('email sent');
+  const verifyEmail = () => {
+    sendEmailVerification(auth.currentUser).then(() => {
+      console.log('email sent')
     })
+  }
+
+  const handleClickForm = () => {
+    <Login></Login>
+  }
+
+  const handleConditions = () => {
+    <TermsAndConditions></TermsAndConditions>
   }
 
   const handleSubmit = (event) => {
     createUserWithEmailAndPassword(auth, email, password)
-    .then(result =>{
-      const user = result.user;
-      console.log(user);
-      setEmail('');
-      setPassword('');
-      verifyEmail();
-    })
-    .catch((error) =>{
-      //setError(error.message);
-    })
-    event.preventDefault();
+      .then((result) => {
+        const user = result.user
+        console.log(user)
+        setEmail('')
+        setPassword('')
+        verifyEmail()
+      })
+      .catch((error) => {
+        //setError(error.message);
+      })
+    event.preventDefault()
   }
 
   return (
@@ -59,7 +73,10 @@ const Register = () => {
             Welcome to SAL! Please Register.
           </p>
 
-          <form onSubmit={handleSubmit} className="space-y-4 space-x-0 bg-blue-300 mx-auto p-12 rounded-2xl ">
+          <form
+            onSubmit={handleSubmit}
+            className="space-y-4 space-x-0 bg-blue-300 mx-auto p-12 rounded-2xl "
+          >
             <h2 className="text-3xl font-bold text-center text-gray-800">
               Register
             </h2>
@@ -86,7 +103,7 @@ const Register = () => {
               <div className="flex flex-col text-gray-800">
                 <label className="font-bold">Email:</label>
                 <input
-                onBlur={handleEmailBlur}
+                  onBlur={handleEmailBlur}
                   type="email"
                   className="rounded-md p-[3px] pl-4 w-full text-gray-800 bg-gray-800 focus:border-blue-500 focus:bg-gray-200 focus:outline-none"
                   placeholder="Email"
@@ -95,7 +112,7 @@ const Register = () => {
               <div className="flex flex-col text-gray-800">
                 <label className="font-bold">Password:</label>
                 <input
-                onBlur={handlePassBlur}
+                  onBlur={handlePassBlur}
                   type="password"
                   className="rounded-md p-[3px] pl-4 w-full text-gray-800 bg-gray-800 focus:border-blue-500 focus:bg-gray-200 focus:outline-none"
                   placeholder="Password"
@@ -115,11 +132,13 @@ const Register = () => {
               <input type="checkbox" className="mr-2 mt-[1px]" />
               <p className="flex items-center text-gray-800 font-black ">
                 I read and agree to
-                <span className="text-blue-600 pl-2 underline">
-                  <a href="../Terms & conditions/termsAndConditions.js">
-                    Terms & Conditions.
-                  </a>
-                </span>
+                <button  onClick={handleConditions} variant="Link">
+                  <span className="text-blue-600 pl-2 underline">
+                    <Link to="/TermsAndConditions">
+                      Terms & Conditions.
+                    </Link>
+                  </span>
+                </button>
               </p>
             </div>
 
@@ -132,9 +151,11 @@ const Register = () => {
             <div className="flex justify-center">
               <p className="text-gray-800 font-black">
                 Already have an account?
-                <span className="text-blue-600 pl-1 underline">
-                  <a href="../Form/Form.js">Sign In</a>
-                </span>
+                <button onClick={handleClickForm} variant="Link">
+                  <span className="text-blue-600 pl-1 underline">
+                    <Link to="/Login">Sign In</Link>
+                  </span>
+                </button>
               </p>
             </div>
           </form>

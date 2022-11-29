@@ -4,13 +4,9 @@ import Crud from './components/CRUD/Crud';
 import Activity from './components/Activity/Activity';
 import About from './components/About/About';
 import Contact from './components/Contact/Contact';
-import Form from './components/Form/Form';
+import Login from './components/Login/Login';
 import Register from './components/Register/Register';
-/*import { app } from './firebase.init';
-import { getAuth } from "firebase/auth";*/
-
-
-//const auth = getAuth(app);
+import TermsAndConditions from './components/TermsAndConditions/TermsAndConditions';
 
 function App() {
   
@@ -23,8 +19,9 @@ function App() {
         <Route path ="/Activity" element={<Activity></Activity>}></Route>
         <Route path ="/About" element={<About></About>}></Route>
         <Route path ="/Contact" element={<Contact></Contact>}></Route>
-        <Route path ="/Form" element={<Form></Form>}></Route>
+        <Route path ="/Login" element={<Login></Login>}></Route>
         <Route path ="/Register" element={<Register></Register>}></Route>
+        <Route path ="/TermsAndConditions" element={<TermsAndConditions></TermsAndConditions>}></Route>
       </Routes>
     </div>
   );
