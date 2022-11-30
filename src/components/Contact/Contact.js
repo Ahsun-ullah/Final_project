@@ -1,17 +1,14 @@
-import React from 'react';
-import Footer from '../Footer/Footer';
-import Navbar from '../Navbar/Navbar';
+import React from 'react'
 
-const Activity = () => {
-    return (
-        <div>
-            <Navbar></Navbar>
-            <h2 className=' container bg-stone-200 text-black '>
-                This is Contact Us
-            </h2>
-            <Footer></Footer>
-        </div>
-    );
-};
+const Contact = () => {
+  return (
+      <div>
+        <h2 className="h-screen container bg-stone-200 text-black font-bold flex pt-8 justify-center text-2xl ">
+          This is Contact Us
+        </h2>
+      </div>
+   
+  )
+}
 
-export default Activity;
+export default Contact

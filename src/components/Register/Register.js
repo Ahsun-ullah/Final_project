@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import Navbar from '../Navbar/Navbar'
 import registerImg from '../../Assets/registerImg.png'
 import {
   getAuth,
@@ -57,7 +56,7 @@ const Register = () => {
 
   return (
     <div>
-      <Navbar></Navbar>
+  
 
       <div className="grid grid-cols-1 sm:grid-cols-2 h-full w-full ">
         <div className="hidden sm:block bg-gray-200 rounded-sm">

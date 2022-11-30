@@ -1,6 +1,5 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import Navbar from '../Navbar/Navbar'
 import loginImg from '../../Assets/loginImg.png'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useState } from 'react'
@@ -59,7 +58,7 @@ const Login = () => {
 
   return (
     <div>
-      <Navbar></Navbar>
+     
 
       <div className="grid grid-cols-1 sm:grid-cols-2 h-screen w-full ">
         <div className="hidden sm:block">

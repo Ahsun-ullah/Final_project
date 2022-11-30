@@ -7,11 +7,13 @@ import Contact from './components/Contact/Contact';
 import Login from './components/Login/Login';
 import Register from './components/Register/Register';
 import TermsAndConditions from './components/TermsAndConditions/TermsAndConditions';
+import Header from './components/Header/Header';
 
 function App() {
   
   return (
     <div>
+      <Header></Header>
       <Routes>
         <Route path ="/" element={<Home></Home>}></Route>
         <Route path ="/Home" element={<Home></Home>}></Route>

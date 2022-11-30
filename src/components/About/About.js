@@ -1,19 +1,13 @@
-import React from 'react';
-import Footer from '../Footer/Footer';
-import Navbar from '../Navbar/Navbar';
+import React from 'react'
 
 const About = () => {
-    return (
-        <div>
-            <Navbar></Navbar>
-            <div className='max-h-full'>
-            <h2 className=' container bg-stone-200 text-black '>
-                This is About Us
-            </h2>
-            </div>
-            <Footer></Footer>
-        </div>
-    );
-};
+  return (
+    <div>
+      <h2 className="h-screen container bg-stone-200 text-black font-bold flex pt-8 justify-center text-2xl ">
+        This is About Us
+      </h2>
+    </div>
+  )
+}
 
-export default About;
+export default About

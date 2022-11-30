@@ -4,15 +4,14 @@ import React from 'react'
 
 const Student_details = () => {
   return (
-    <div className="container bg-stone-200">
-      <div className=" flex items-center justify-center py-4 ">
+    <div>
+      <div className="flex justify-center m-8">
         <div className="border-black border-2 w-[300px] text-black py-3 px-5 rounded-md ">
           <div>
-            <img src="" alt="" />
+            <img src="../../Assets/loginImg.png" s alt="pic" />
           </div>
           <div>
-            <div>
-              <p>{}</p>
+            <div className="my-4">
               <p>
                 <small>Price: ${}</small>
               </p>
@@ -23,8 +22,9 @@ const Student_details = () => {
                 <small>Quantity: {}</small>
               </p>
             </div>
-            <div className="h-8 w-40 p-1 content-center bg-slate-400 rounded-full">
-              <button className="text-center">
+            <div className="flex justify-center">
+              <button className="h-6 w-[200px] hover:bg-green-600 bg-blue-400 rounded-full ">
+                <span className="pr-2 text-black font-semibold">Delete</span>
                 <FontAwesomeIcon icon={faTrashAlt}></FontAwesomeIcon>
               </button>
             </div>
