@@ -1,27 +1,24 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import loginImg from '../../Assets/loginImg.png'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useState } from 'react'
-import {
-  signInWithEmailAndPassword,
-  getAuth,
-  sendPasswordResetEmail,
-} from 'firebase/auth'
-import app from '../../firebase.init'
-
-
-
-
-const auth = getAuth(app)
-
-
-
+import auth from '../../firebase.init'
+import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth'
 
 const Login = () => {
-  //const [error, setError]=useState('');
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+
+  const [
+    signInWithEmailAndPassword,
+    user,
+    loading,
+    error,
+  ] = useSignInWithEmailAndPassword(auth);
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || '/';
 
   const handleEmailBlur = (event) => {
     setEmail(event.target.value)
@@ -31,35 +28,17 @@ const Login = () => {
     setPassword(event.target.value)
   }
 
-  const handleRegister = () => {
-    <Login></Login>
+  if (user){
+    navigate(from, {replace: true});
   }
 
-  const handlePasswordReset = () => {
-    sendPasswordResetEmail(auth, email).then(() => {
-      console.log('sent Password reset mail')
-    })
-    //.catch((error) => {
-    //setError(error.message);
-  }
-
-  const handleSubmit = (event) => {
-    signInWithEmailAndPassword(auth, email, password).then((result) => {
-      const user = result.user
-      console.log(user)
-      setEmail('')
-      setPassword('')
-    })
-    //.catch((error) => {
-    //setError(error.message);}
-
+  const handleLogin = (event) => {
     event.preventDefault()
+    signInWithEmailAndPassword(email, password)
   }
 
   return (
     <div>
-     
-
       <div className="grid grid-cols-1 sm:grid-cols-2 h-screen w-full ">
         <div className="hidden sm:block">
           <img className="h-screen w-full object-cover" src={loginImg} alt="" />
@@ -71,7 +50,7 @@ const Login = () => {
           </p>
 
           <form
-            onSubmit={handleSubmit}
+            onSubmit={handleLogin}
             className="space-y-4 space-x-0 max-w-[400px] w-full mx-auto bg-gray-900 p-12 rounded-lg "
           >
             <h2 className="text-3xl text-gray-100 font-bold text-center">
@@ -104,9 +83,9 @@ const Login = () => {
                 <input type="checkbox" className="mr-2 bg-gray-500 " />
                 Remember Me.
               </p>
-              <button onClick={handlePasswordReset} variant="Link">
+              <button variant="Link">
                 <span className="text-sm tracking-wide text-blue-500 underline">
-                  Forgot password ?
+                 <Link to> Forgot password ?</Link>
                 </span>
               </button>
             </div>
@@ -119,26 +98,25 @@ const Login = () => {
 
             <div className=" flex justify-between">
               <button className="bg-blue-500 rounded-md p-2 text-gray-200  ">
-                <FontAwesomeIcon icon="fa-brands fa-google" />
                 <span>with Google</span>
               </button>
               <button className="bg-blue-500 rounded-md p-2 text-gray-200  ">
                 <div>
-                  <FontAwesomeIcon icon="fa-brands fa-google" />
                   <span>with Github</span>
                 </div>
               </button>
             </div>
-
+            <p className="text-red-700 underline">{error}</p>
+            <p>{loading}</p>
             <div className="flex justify-center">
               <button className="bg-blue-500 rounded-md p-1 text-gray-200 mb-4 w-full shadow-lg shadow-blue-500/10 hover:shadow-blue-500/60 font-semibold">
                 <span>Login</span>
               </button>
             </div>
 
-            <button className="text-blue-500 underline">
-              <Link to="/Register" onClick={handleRegister}>Create new account.?</Link>
-            </button>
+            <p className="text-blue-500 underline">
+              <Link to="/Register">Create new account.?</Link>
+            </p>
           </form>
         </div>
       </div>

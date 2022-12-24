@@ -1,7 +1,17 @@
+import { signOut } from 'firebase/auth'
 import React from 'react'
+import { useAuthState } from 'react-firebase-hooks/auth'
 import { Link } from 'react-router-dom'
+import auth from '../../firebase.init'
 
 const Header = () => {
+  const [user] = useAuthState(auth)
+
+  const handleLogout = () => {
+    signOut(auth);
+    console.log('clicked');
+  }
+
   return (
     <div className="bg-gray-200">
       <div className="navbar bg-blue-400">
@@ -48,13 +58,8 @@ const Header = () => {
                 </Link>
               </li>
               <li>
-                <Link className="text-black text-xl" to="/Register">
-                  Register form
-                </Link>
-              </li>
-              <li>
                 <Link className="text-black text-xl" to="/TermsAndConditions">
-                T&C
+                  T&C
                 </Link>
               </li>
             </ul>
@@ -91,20 +96,19 @@ const Header = () => {
               </Link>
             </li>
             <li>
-              <Link className="text-black text-xl" to="/Login">
-                Login form
-              </Link>
-            </li>
-            <li>
-              <Link className="text-black text-xl" to="/Register">
-                Register form
-              </Link>
+              {user ? (
+                <button
+                  onClick={handleLogout}
+                  className="btn btn-ghost btn-circle text-black normal-case "
+                >
+                  <p className="text-black text-xl">logOut</p>
+                </button>
+              ) : (
+                <Link className="text-black text-xl" to="/Login"></Link>
+              )}
             </li>
           </ul>
         </div>
-        <button className="btn btn-ghost btn-circle text-black normal-case ">
-          <p className="text-black text-xl">logOut</p>
-        </button>
       </div>
     </div>
   )
