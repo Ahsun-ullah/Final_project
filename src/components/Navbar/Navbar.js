@@ -8,8 +8,8 @@ const Header = () => {
   const [user] = useAuthState(auth)
 
   const handleLogout = () => {
-    signOut(auth);
-    console.log('clicked');
+    signOut(auth)
+    console.log('clicked')
   }
 
   return (
@@ -38,8 +38,8 @@ const Header = () => {
                 </Link>
               </li>
               <li>
-                <Link className="text-black text-xl" to="/Activity">
-                  Activity
+                <Link className="text-black text-xl" to="/CreateProfiles">
+                CreateProfiles
                 </Link>
               </li>
               <li>
@@ -81,18 +81,8 @@ const Header = () => {
               </Link>
             </li>
             <li>
-              <Link className="text-black text-xl" to="/Activity">
-                Activity
-              </Link>
-            </li>
-            <li>
-              <Link className="text-black text-xl" to="/About">
-                About Us
-              </Link>
-            </li>
-            <li>
-              <Link className="text-black text-xl" to="/Contact">
-                Contact Us
+              <Link className="text-black text-xl" to="/CreateProfiles">
+              CreateProfiles
               </Link>
             </li>
             <li>
