@@ -33,8 +33,8 @@ const Header = () => {
                 </Link>
               </li>
               <li>
-                <Link className="text-black text-xl" to="/Crud">
-                  Crud
+                <Link className="text-black text-xl" to="/Profiles">
+                Profiles
                 </Link>
               </li>
               <li>
@@ -71,18 +71,28 @@ const Header = () => {
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal p-0">
             <li>
-              <Link className="text-black text-xl" to="/">
+              <Link className="text-black text-xl" to="/Home">
                 Home
               </Link>
             </li>
             <li>
-              <Link className="text-black text-xl" to="/Crud">
-                Crud
+              <Link className="text-black text-xl" to="/Profiles">
+              Profiles
               </Link>
             </li>
             <li>
               <Link className="text-black text-xl" to="/CreateProfiles">
               CreateProfiles
+              </Link>
+            </li>
+            <li>
+              <Link className="text-black text-xl" to="/Login">
+              Login
+              </Link>
+            </li>
+            <li>
+              <Link className="text-black text-xl" to="/Register">
+              SignIn
               </Link>
             </li>
             <li>

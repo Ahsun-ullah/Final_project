@@ -1,14 +1,15 @@
+import React from 'react'
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React from 'react'
+import git from '../../Assets/git.png'
 
-const Student_details = () => {
+const StudentDetails = () => {
   return (
     <div>
       <div className="flex justify-center m-8">
         <div className="border-black border-2 w-[300px] text-black py-3 px-5 rounded-md ">
           <div>
-            <img src="../../Assets/loginImg.png" s alt="pic" />
+            <img src={git} alt="pic" />
           </div>
           <div>
             <div className="my-4">
@@ -35,4 +36,4 @@ const Student_details = () => {
   )
 }
 
-export default Student_details
+export default StudentDetails
