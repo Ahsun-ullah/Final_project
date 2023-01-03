@@ -2,6 +2,7 @@ import React from 'react'
 import StudentDetails from '../StudentDetails/StudentDetails'
 
 const Profiles = () => {
+
   return (
     <div>
         <div className="container bg-stone-200 h-screen">

@@ -86,6 +86,11 @@ const Header = () => {
               </Link>
             </li>
             <li>
+              <Link className="text-black text-xl" to="/UserSide">
+              Chat
+              </Link>
+            </li>
+            <li>
               <Link className="text-black text-xl" to="/Login">
               Login
               </Link>

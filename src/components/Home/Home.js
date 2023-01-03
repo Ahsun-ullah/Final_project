@@ -1,12 +1,9 @@
 import React from 'react'
-import Carousel from '../Carousel/Carousel'
 
 const Home = () => {
   return (
     <div>
-      <div className=" bg-stone-200">
-        <Carousel></Carousel>
-      </div>
+      <div className=" flex h-screen w-full bg-blue-300"></div>
     </div>
   )
 }

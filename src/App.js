@@ -8,8 +8,9 @@ import Login from './components/Login/Login'
 import Register from './components/Register/Register'
 import TermsAndConditions from './components/TermsAndConditions/TermsAndConditions'
 import Header from './components/Header/Header'
-//import RequireAuth from './components/RequireAuth/RequireAuth'
+import RequireAuth from './components/RequireAuth/RequireAuth'
 import Footer from './components/Footer/Footer'
+import UserSide from './components/UserSide/UserSide'
 
 function App() {
   return (
@@ -19,10 +20,9 @@ function App() {
         <Route
           path="/"
           element={
-            <Home></Home>
-            /*<RequireAuth>
+            <RequireAuth>
               <Home></Home>
-            </RequireAuth>*/
+            </RequireAuth>
           }
         ></Route>
         <Route path="/Home" element={<Home></Home>}></Route>
@@ -31,6 +31,7 @@ function App() {
           path="/CreateProfiles"
           element={<CreateProfiles></CreateProfiles>}
         ></Route>
+        <Route path="/UserSide" element={<UserSide></UserSide>}></Route>
         <Route path="/About" element={<About></About>}></Route>
         <Route path="/Contact" element={<Contact></Contact>}></Route>
         <Route path="/Login" element={<Login></Login>}></Route>

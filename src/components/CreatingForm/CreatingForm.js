@@ -4,7 +4,7 @@ const CreatingForm = () => {
   return (
     <div className="grid grid-cols-1 bg-gray-900">
       <p className="font-bold text-3xl text-center my-5">
-        Please submit the Form.
+        Create Profiles
       </p>
       <div className="flex justify-center bg-blue-300 rounded-2xl mx-auto p-14 mb-10">
         <form>
@@ -31,7 +31,7 @@ const CreatingForm = () => {
               />
             </div>
           </div>
-          <div className="w-full mb-4">
+         <div className="w-full mb-4">
             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
               Email
             </label>
@@ -40,7 +40,7 @@ const CreatingForm = () => {
               type="email"
               placeholder="email"
               required
-            />
+            /> 
           </div>
           <div className="flex flex-wrap -mx-3">
             <div className="w-full px-3">
@@ -67,15 +67,11 @@ const CreatingForm = () => {
               required
             />
           </div>
-          <div className="w-full mb-4">
-            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-              Number of account
-            </label>
-            <input
-              className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-              type="number"
-              placeholder="Submit the number"
-            />
+
+          <div className="flex justify-center">
+            <button className="bg-gray-800 rounded-3xl p-1 text-gray-300 my-4 w-full shadow-lg shadow-gray-500/10 hover:shadow-gray-500/60 font-semibold">
+              <span>Submit</span>
+            </button>
           </div>
         </form>
       </div>

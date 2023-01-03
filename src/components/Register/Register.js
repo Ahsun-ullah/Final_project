@@ -116,6 +116,16 @@ const Register = () => {
                     required
                   />
                 </div>
+                <div className="flex flex-col text-gray-800">
+                  <label className="font-bold">ID:</label>
+                  <input
+                    onBlur={handleConfirmPassBlur}
+                    type="number"
+                    className="rounded-md p-[3px] pl-4 w-full text-gray-800 bg-gray-800 focus:border-blue-500 focus:bg-gray-200 focus:outline-none"
+                    placeholder="Submit your id"
+                    required
+                  />
+                </div>
               </div>
 
               <div className="flex justify-center py-4">
