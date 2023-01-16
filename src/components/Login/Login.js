@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import loginImg from '../../Assets/loginImg.png'
 import { useState } from 'react'
 import auth from '../../firebase.init'
@@ -8,7 +8,6 @@ import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth'
 const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const location = useLocation()
 
   const [
     signInWithEmailAndPassword,
@@ -18,7 +17,6 @@ const Login = () => {
   ] = useSignInWithEmailAndPassword(auth)
 
   const navigate = useNavigate()
-  const from = location.state?.from?.pathname || '/'
 
   const handleEmailBlur = (event) => {
     setEmail(event.target.value)
@@ -29,7 +27,7 @@ const Login = () => {
   }
 
   if (user) {
-    navigate(from, { replace: true }) || navigate('/Login')
+    navigate('/UserSide')
   }
 
   const handleLogin = (event) => {
@@ -88,7 +86,6 @@ const Login = () => {
                 type="number"
                 className="rounded-md p-[2px] pl-2 text-gray-800 bg-gray-800 focus:border-blue-500 focus:bg-gray-200 focus:outline-none"
                 placeholder="Submit your id"
-                required
               />
             </div>
 

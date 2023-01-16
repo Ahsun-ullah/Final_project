@@ -1,46 +1,80 @@
-import React, { useState } from 'react'
+import React from 'react'
 import registerImg from '../../Assets/registerImg.png'
+import { updateProfile } from 'firebase/auth'
 import { Link, useNavigate } from 'react-router-dom'
 import auth from '../../firebase.init'
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth'
+import { doc, getFirestore, setDoc } from 'firebase/firestore'
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+} from 'firebase/storage'
+
+const db = getFirestore()
 
 const Register = () => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
+  const navigate = useNavigate()
 
   const [
     createUserWithEmailAndPassword,
-    user,
     error,
   ] = useCreateUserWithEmailAndPassword(auth)
 
-  const navigate = useNavigate()
-
-  const handleEmailBlur = (event) => {
-    setEmail(event.target.value)
-  }
-
-  const handlePassBlur = (event) => {
-    setPassword(event.target.value)
-  }
-  const handleConfirmPassBlur = (event) => {
-    setConfirmPassword(event.target.value)
-  }
-
-  const handleCreateUser = (event) => {
+  const handleCreateUser = async (event) => {
     event.preventDefault()
+    const firstName = event.target[0].value
+    const email = event.target[2].value
+    const password = event.target[3].value
+    const confirmPassword = event.target[4].value
+    const file = event.target[6].files[0]
+
+    console.log(firstName)
+    console.log(email)
+    console.log(password)
+    console.log(confirmPassword)
+    console.log(file)
+
     if (password !== confirmPassword) {
       error('Password did not match')
       return
     }
-    createUserWithEmailAndPassword(email, password)
-
-    if (user) {
-      console.log('user:', user)
-    }
 
     navigate('/Login')
+
+    try {
+      // Create User
+      const res = await createUserWithEmailAndPassword(email, password)
+      console.log(res)
+
+      // Create a unique image name
+      const storage = getStorage()
+      const storageRef = ref(storage, firstName)
+
+      const uploadTask = uploadBytesResumable(storageRef, file)
+
+      uploadTask.on(
+        (error) => {},
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+            await updateProfile(res.user, {
+              displayName: firstName,
+              photoURL: downloadURL,
+            })
+            //create user on firebase
+            await setDoc(doc(db, 'users', res.user.uid), {
+              uid: res.user.uid,
+              firstName,
+              email,
+              photoURL: downloadURL,
+            })
+            await setDoc(doc(db, 'userChats', res.user.uid), {})
+            navigate('/')
+          })
+        },
+      )
+    } catch (error) {}
   }
 
   return (
@@ -59,12 +93,12 @@ const Register = () => {
             Welcome to SAL! Please Register.
           </p>
 
-          <div className="space-y-4 space-x-0 bg-blue-300 mx-auto p-12 rounded-2xl ">
+          <div className="space-y-2 space-x-0 bg-blue-300 mx-auto p-10 rounded-2xl ">
             <form onSubmit={handleCreateUser}>
-              <h2 className="text-3xl font-bold text-center text-gray-800">
+              <h2 className="text-3xl font-bold text-center text-gray-800 -mt-4 mb-2">
                 Register
               </h2>
-              <div className="grid gap-8 grid-cols-2 ">
+              <div className="grid gap-8 grid-cols-2">
                 <div className="flex flex-col text-gray-800 ">
                   <label className="font-bold">First Name:</label>
                   <input
@@ -89,7 +123,6 @@ const Register = () => {
                 <div className="flex flex-col text-gray-800">
                   <label className="font-bold">Email:</label>
                   <input
-                    onBlur={handleEmailBlur}
                     type="email"
                     className="rounded-md p-[3px] pl-4 w-full text-gray-800 bg-gray-800 focus:border-blue-500 focus:bg-gray-200 focus:outline-none"
                     placeholder="Email"
@@ -99,7 +132,6 @@ const Register = () => {
                 <div className="flex flex-col text-gray-800">
                   <label className="font-bold">Password:</label>
                   <input
-                    onBlur={handlePassBlur}
                     type="password"
                     className="rounded-md p-[3px] pl-4 w-full text-gray-800 bg-gray-800 focus:border-blue-500 focus:bg-gray-200 focus:outline-none"
                     placeholder="Password"
@@ -109,7 +141,6 @@ const Register = () => {
                 <div className="flex flex-col text-gray-800">
                   <label className="font-bold">Confirm Password:</label>
                   <input
-                    onBlur={handleConfirmPassBlur}
                     type="password"
                     className="rounded-md p-[3px] pl-4 w-full text-gray-800 bg-gray-800 focus:border-blue-500 focus:bg-gray-200 focus:outline-none"
                     placeholder="Confirm Password"
@@ -119,11 +150,20 @@ const Register = () => {
                 <div className="flex flex-col text-gray-800">
                   <label className="font-bold">ID:</label>
                   <input
-                    onBlur={handleConfirmPassBlur}
                     type="number"
                     className="rounded-md p-[3px] pl-4 w-full text-gray-800 bg-gray-800 focus:border-blue-500 focus:bg-gray-200 focus:outline-none"
                     placeholder="Submit your id"
-                    required
+                  />
+                </div>
+                <div className=" flex-row text-gray-800">
+                  <label htmlFor="file" className="font-bold">
+                    <span>Add a picture</span>
+                  </label>
+                  <input
+                    type="file"
+                    id="file"
+                    className="rounded-md p-[3px] pl-4 w-full text-gray-800 bg-gray-800 focus:border-blue-500 focus:bg-gray-200 focus:outline-none"
+                    placeholder="Submit your id"
                   />
                 </div>
               </div>
@@ -148,7 +188,7 @@ const Register = () => {
               <p className="text-gray-800 font-black">
                 Already have an account ?
                 <span className="text-blue-600 pl-2 underline">
-                  <Link to="/Login">Sign In</Link>
+                  <Link to="/Login">Please LogIn</Link>
                 </span>
               </p>
             </div>

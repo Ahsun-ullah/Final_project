@@ -1,19 +1,21 @@
 import { signOut } from 'firebase/auth'
 import React from 'react'
 import { useAuthState } from 'react-firebase-hooks/auth'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import auth from '../../firebase.init'
 
 const Header = () => {
   const [user] = useAuthState(auth)
+  const navigate = useNavigate()
 
   const handleLogout = () => {
     signOut(auth)
     console.log('clicked')
+    navigate('/Login')
   }
 
   return (
-    <div className="bg-gray-200">
+    <div>
       <div className="navbar bg-blue-400">
         <div className="navbar-start">
           <div className="dropdown">
@@ -34,12 +36,12 @@ const Header = () => {
               </li>
               <li>
                 <Link className="text-black text-xl" to="/Profiles">
-                Profiles
+                  Profiles
                 </Link>
               </li>
               <li>
                 <Link className="text-black text-xl" to="/CreateProfiles">
-                CreateProfiles
+                  CreateProfiles
                 </Link>
               </li>
               <li>
@@ -68,8 +70,8 @@ const Header = () => {
             Name
           </Link>
         </div>
-        <div className="navbar-center hidden lg:flex">
-          <ul className="menu menu-horizontal p-0">
+        <div className="navbar-center  lg:flex">
+          <ul className="menu menu-horizontal">
             <li>
               <Link className="text-black text-xl" to="/Home">
                 Home
@@ -77,39 +79,51 @@ const Header = () => {
             </li>
             <li>
               <Link className="text-black text-xl" to="/Profiles">
-              Profiles
+                Profiles
               </Link>
             </li>
             <li>
               <Link className="text-black text-xl" to="/CreateProfiles">
-              CreateProfiles
+                CreateProfiles
               </Link>
             </li>
             <li>
               <Link className="text-black text-xl" to="/UserSide">
-              Chat
+                Chat
               </Link>
             </li>
-            <li>
-              <Link className="text-black text-xl" to="/Login">
-              Login
-              </Link>
-            </li>
-            <li>
-              <Link className="text-black text-xl" to="/Register">
-              SignIn
-              </Link>
-            </li>
-            <li>
+            <li></li>
+
+            <li className="text-transparent -mr-7 ">
               {user ? (
-                <button
-                  onClick={handleLogout}
-                  className="btn btn-ghost btn-circle text-black normal-case "
-                >
-                  <p className="text-black text-xl">logOut</p>
-                </button>
+                <div>
+                  <img
+                    className="h-12 w-12 rounded-full "
+                    src={user?.photoURL}
+                    alt=""
+                  />
+                  <p className="text-sm font-bold text-black">
+                    {user?.displayName}
+                  </p>
+                  <div>
+                    <button
+                      className="text-gray-800 font-medium hover:bg-gray-900 hover:text-gray-300 shadow-lg rounded-full px-3 h-7 w-auto my-auto ml-8"
+                      onClick={handleLogout}
+                    >
+                      logout
+                    </button>
+                  </div>
+                </div>
               ) : (
-                <Link className="text-black text-xl" to="/Login"></Link>
+                <Link to="/Login"></Link> || (
+                  <Link className="text-black text-xl" to="/Register">
+                    Signin
+                  </Link>
+                ) || (
+                  <Link className="text-black text-xl" to="/Login">
+                    Login
+                  </Link>
+                )
               )}
             </li>
           </ul>

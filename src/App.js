@@ -10,12 +10,13 @@ import TermsAndConditions from './components/TermsAndConditions/TermsAndConditio
 import Header from './components/Header/Header'
 import RequireAuth from './components/RequireAuth/RequireAuth'
 import Footer from './components/Footer/Footer'
-import UserSide from './components/UserSide/UserSide'
+import UserSide from './components/ChatsComp/UserSide'
 
 function App() {
   return (
     <div>
       <Header></Header>
+
       <Routes>
         <Route
           path="/"
@@ -25,13 +26,27 @@ function App() {
             </RequireAuth>
           }
         ></Route>
-        <Route path="/Home" element={<Home></Home>}></Route>
+        <Route
+          path="/Home"
+          element={
+            <RequireAuth>
+              <Home></Home>
+            </RequireAuth>
+          }
+        ></Route>
         <Route path="/Profiles" element={<Profiles></Profiles>}></Route>
         <Route
           path="/CreateProfiles"
           element={<CreateProfiles></CreateProfiles>}
         ></Route>
-        <Route path="/UserSide" element={<UserSide></UserSide>}></Route>
+        <Route
+          path="/UserSide"
+          element={
+            <RequireAuth>
+              <UserSide></UserSide>
+            </RequireAuth>
+          }
+        ></Route>
         <Route path="/About" element={<About></About>}></Route>
         <Route path="/Contact" element={<Contact></Contact>}></Route>
         <Route path="/Login" element={<Login></Login>}></Route>
@@ -41,6 +56,7 @@ function App() {
           element={<TermsAndConditions></TermsAndConditions>}
         ></Route>
       </Routes>
+
       <Footer></Footer>
     </div>
   )
