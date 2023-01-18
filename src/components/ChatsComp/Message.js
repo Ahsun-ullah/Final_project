@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef } from 'react'
 import { ContextAuth } from '../ContextApi/ContextAuth'
 import { ContextChat } from '../ContextApi/ContextChat'
 
-const Message = (message) => {
+const Message = ({ message }) => {
   const { currentUser } = useContext(ContextAuth)
   const { data } = useContext(ContextChat)
 
@@ -15,9 +15,8 @@ const Message = (message) => {
   return (
     <div
       ref={ref}
-      className={`message ${message.senderId === currentUser.uid && 'owner'}`}
+      className={`message ${message?.senderId === currentUser?.uid && 'owner'}`}
     >
-      {/* First  message start (left)*/}
       <div className="chat-message">
         <div className="flex items-end ">
           <div className="flex flex-col space-y-2 text-xs max-w-xs mx-2 order-2 items-start">
@@ -31,16 +30,15 @@ const Message = (message) => {
           <img
             className="w-6 h-6 rounded-full order-1"
             src={
-              message.senderId === currentUser.uid
-                ? currentUser.photoURL
-                : data.user.photoURL
+              message?.senderId === currentUser?.uid
+                ? currentUser?.photoURL
+                : data?.user.photoURL
             }
             alt=""
           />
           <span>just now</span>
         </div>
       </div>
-      {/* First  message end (left)*/}
     </div>
   )
 }

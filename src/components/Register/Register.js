@@ -1,28 +1,23 @@
-import React from 'react'
+import React, { useState } from 'react'
 import registerImg from '../../Assets/registerImg.png'
 import { updateProfile } from 'firebase/auth'
 import { Link, useNavigate } from 'react-router-dom'
-import auth from '../../firebase.init'
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth'
-import { doc, getFirestore, setDoc } from 'firebase/firestore'
-import {
-  getStorage,
-  ref,
-  uploadBytesResumable,
-  getDownloadURL,
-} from 'firebase/storage'
-
-const db = getFirestore()
+import { doc, setDoc } from 'firebase/firestore'
+import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
+import { auth, db, storage } from '../../firebase.init'
 
 const Register = () => {
+  const [err, setErr] = useState(false)
+  const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
 
-  const [
-    createUserWithEmailAndPassword,
-    error,
-  ] = useCreateUserWithEmailAndPassword(auth)
+  const [createUserWithEmailAndPassword] = useCreateUserWithEmailAndPassword(
+    auth,
+  )
 
   const handleCreateUser = async (event) => {
+    setLoading(true)
     event.preventDefault()
     const firstName = event.target[0].value
     const email = event.target[2].value
@@ -30,14 +25,8 @@ const Register = () => {
     const confirmPassword = event.target[4].value
     const file = event.target[6].files[0]
 
-    console.log(firstName)
-    console.log(email)
-    console.log(password)
-    console.log(confirmPassword)
-    console.log(file)
-
     if (password !== confirmPassword) {
-      error('Password did not match')
+      err(<span className="text-red-700 underline">Something went wrong</span>)
       return
     }
 
@@ -46,35 +35,44 @@ const Register = () => {
     try {
       // Create User
       const res = await createUserWithEmailAndPassword(email, password)
-      console.log(res)
+      console.log(res?.user.uid)
+      console.log(res?.user)
 
       // Create a unique image name
-      const storage = getStorage()
-      const storageRef = ref(storage, firstName)
+      const date = new Date().getTime()
+      const storageRef = ref(storage, `${firstName + date}`)
+      console.log('object')
+      await uploadBytesResumable(storageRef, file).then(() => {
+        getDownloadURL(storageRef).then(async (downloadURL) => {
+          try {
+            //Update profile
 
-      const uploadTask = uploadBytesResumable(storageRef, file)
-
-      uploadTask.on(
-        (error) => {},
-        () => {
-          getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
-            await updateProfile(res.user, {
+            await updateProfile(res?.user, {
               displayName: firstName,
               photoURL: downloadURL,
             })
             //create user on firebase
-            await setDoc(doc(db, 'users', res.user.uid), {
-              uid: res.user.uid,
-              firstName,
+            console.log('object')
+            await setDoc(doc(db, 'users', res?.user.uid), {
+              uid: res?.user.uid,
+              displayName: firstName,
               email,
               photoURL: downloadURL,
             })
-            await setDoc(doc(db, 'userChats', res.user.uid), {})
-            navigate('/')
-          })
-        },
-      )
-    } catch (error) {}
+            //create empty user chats on firestore
+            await setDoc(doc(db, 'userChats', res?.user.uid), {})
+            navigate('/Login')
+          } catch (err) {
+            console.log(err)
+            setErr(true)
+            setLoading(false)
+          }
+        })
+      })
+    } catch (err) {
+      setErr(true)
+      setLoading(false)
+    }
   }
 
   return (
@@ -103,7 +101,7 @@ const Register = () => {
                   <label className="font-bold">First Name:</label>
                   <input
                     type="text"
-                    className="rounded-md p-[3px] pl-4 text-gray-800 bg-gray-800 focus:border-blue-500 focus:bg-gray-200 focus:outline-none"
+                    className="rounded-md p-[3px] pl-4 text-gray-800  focus:bg-gray-200 focus:outline-none"
                     placeholder="First Name"
                     required
                   />
@@ -112,7 +110,7 @@ const Register = () => {
                   <label className="font-bold">Last Name:</label>
                   <input
                     type="text"
-                    className="rounded-md p-[3px] pl-4 text-gray-800 bg-gray-800 focus:border-blue-500 focus:bg-gray-200 focus:text-black focus:outline-none"
+                    className="rounded-md p-[3px] pl-4 text-gray-800  focus:bg-gray-200 focus:text-black focus:outline-none"
                     placeholder="Last Name"
                     required
                   />
@@ -124,7 +122,7 @@ const Register = () => {
                   <label className="font-bold">Email:</label>
                   <input
                     type="email"
-                    className="rounded-md p-[3px] pl-4 w-full text-gray-800 bg-gray-800 focus:border-blue-500 focus:bg-gray-200 focus:outline-none"
+                    className="rounded-md p-[3px] pl-4 w-full text-gray-800  focus:bg-gray-200 focus:outline-none"
                     placeholder="Email"
                     required
                   />
@@ -133,7 +131,7 @@ const Register = () => {
                   <label className="font-bold">Password:</label>
                   <input
                     type="password"
-                    className="rounded-md p-[3px] pl-4 w-full text-gray-800 bg-gray-800 focus:border-blue-500 focus:bg-gray-200 focus:outline-none"
+                    className="rounded-md p-[3px] pl-4 w-full text-gray-800  focus:bg-gray-200 focus:outline-none"
                     placeholder="Password"
                     required
                   />
@@ -142,7 +140,7 @@ const Register = () => {
                   <label className="font-bold">Confirm Password:</label>
                   <input
                     type="password"
-                    className="rounded-md p-[3px] pl-4 w-full text-gray-800 bg-gray-800 focus:border-blue-500 focus:bg-gray-200 focus:outline-none"
+                    className="rounded-md p-[3px] pl-4 w-full text-gray-800  focus:bg-gray-200 focus:outline-none"
                     placeholder="Confirm Password"
                     required
                   />
@@ -151,7 +149,7 @@ const Register = () => {
                   <label className="font-bold">ID:</label>
                   <input
                     type="number"
-                    className="rounded-md p-[3px] pl-4 w-full text-gray-800 bg-gray-800 focus:border-blue-500 focus:bg-gray-200 focus:outline-none"
+                    className="rounded-md p-[3px] pl-4 w-full text-gray-800  focus:bg-gray-200 focus:outline-none"
                     placeholder="Submit your id"
                   />
                 </div>
@@ -162,8 +160,7 @@ const Register = () => {
                   <input
                     type="file"
                     id="file"
-                    className="rounded-md p-[3px] pl-4 w-full text-gray-800 bg-gray-800 focus:border-blue-500 focus:bg-gray-200 focus:outline-none"
-                    placeholder="Submit your id"
+                    className="rounded-md p-[3px] pl-4 w-full text-gray-800 focus:bg-gray-400 bg-gray-200"
                   />
                 </div>
               </div>
@@ -177,7 +174,12 @@ const Register = () => {
                   </span>
                 </p>
               </div>
-              <p className="text-red-700 underline">{error}</p>
+              {loading && <span className="text-gray-900 underline"></span>}
+              {err && (
+                <span className="text-red-700 underline">
+                  Something went wrong
+                </span>
+              )}
               <div className="flex justify-center">
                 <button className="bg-gray-800 rounded-2xl p-1 text-gray-300 mb-4 w-full shadow-md shadow-blue-500/10 hover:shadow-gray-800/60 font-semibold">
                   <span>Create Account</span>

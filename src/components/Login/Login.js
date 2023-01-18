@@ -2,37 +2,24 @@ import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import loginImg from '../../Assets/loginImg.png'
 import { useState } from 'react'
-import auth from '../../firebase.init'
 import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth'
+import { auth } from '../../firebase.init'
 
 const Login = () => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-
-  const [
-    signInWithEmailAndPassword,
-    user,
-    loading,
-    error,
-  ] = useSignInWithEmailAndPassword(auth)
-
+  const [err, setErr] = useState(false)
   const navigate = useNavigate()
+  const [signInWithEmailAndPassword] = useSignInWithEmailAndPassword(auth)
 
-  const handleEmailBlur = (event) => {
-    setEmail(event.target.value)
-  }
-
-  const handlePassBlur = (event) => {
-    setPassword(event.target.value)
-  }
-
-  if (user) {
-    navigate('/UserSide')
-  }
-
-  const handleLogin = (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault()
-    signInWithEmailAndPassword(email, password)
+    const email = event.target[0].value
+    const password = event.target[1].value
+    try {
+      await signInWithEmailAndPassword(email, password)
+      navigate('/UserSide')
+    } catch (err) {
+      setErr(true)
+    }
   }
 
   return (
@@ -48,7 +35,7 @@ const Login = () => {
 
         <div className="flex flex-col justify-center h-full w-full bg-gray-900">
           <p className="font-bold text-3xl mb-9 text-current text-center">
-            Welcome to SAL! Login first.
+            Welcome to RAP! Login first.
           </p>
 
           <form
@@ -61,9 +48,8 @@ const Login = () => {
             <div className="flex flex-col text-gray-800">
               <label className="font-bold">Email:</label>
               <input
-                onBlur={handleEmailBlur}
                 type="email"
-                className="rounded-md p-[2px] pl-2 text-gray-800 bg-gray-800 focus:border-blue-500 focus:bg-gray-200 focus:outline-none"
+                className="rounded-md p-[2px] pl-2 text-gray-800  focus:bg-gray-200 focus:outline-none"
                 placeholder="Your Email"
                 required
               />
@@ -72,9 +58,8 @@ const Login = () => {
             <div className="flex flex-col text-gray-800">
               <label className="font-bold">Password:</label>
               <input
-                onBlur={handlePassBlur}
                 type="password"
-                className="rounded-md p-[2px] pl-2 text-gray-800 bg-gray-800 focus:border-blue-500 focus:bg-gray-200 focus:outline-none"
+                className="rounded-md p-[2px] pl-2 text-gray-800  focus:bg-gray-200 focus:outline-none"
                 placeholder="Password"
                 required
               />
@@ -82,9 +67,8 @@ const Login = () => {
             <div className="flex flex-col text-gray-800">
               <label className="font-bold">ID:</label>
               <input
-                onBlur={handlePassBlur}
                 type="number"
-                className="rounded-md p-[2px] pl-2 text-gray-800 bg-gray-800 focus:border-blue-500 focus:bg-gray-200 focus:outline-none"
+                className="rounded-md p-[2px] pl-2 text-gray-800  focus:bg-gray-200 focus:outline-none"
                 placeholder="Submit your id"
               />
             </div>
@@ -116,8 +100,12 @@ const Login = () => {
                 </div>
               </button>
             </div>
-            <p className="text-red-700 underline">{error}</p>
-            <p>{loading}</p>
+            {err && (
+              <span className="text-red-700 underline">
+                Something went wrong
+              </span>
+            )}
+
             <div className="flex justify-center">
               <button className="bg-gray-800 rounded-md p-1 text-gray-300 mb-4 w-full shadow-lg shadow-gray-500/10 hover:shadow-gray-500/60 font-semibold">
                 <span>Login</span>

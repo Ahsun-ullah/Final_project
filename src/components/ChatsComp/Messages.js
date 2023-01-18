@@ -1,16 +1,15 @@
-import { doc, getFirestore, onSnapshot } from 'firebase/firestore'
+import { doc, onSnapshot } from 'firebase/firestore'
 import React, { useContext, useEffect, useState } from 'react'
+import { db } from '../../firebase.init'
 import { ContextChat } from '../ContextApi/ContextChat'
 import Message from './Message'
-
-const db = getFirestore()
 
 const Messages = () => {
   const [messages, setMessages] = useState([])
   const { data } = useContext(ContextChat)
 
   useEffect(() => {
-    const unSub = onSnapshot(doc(db, 'chats', data.chatId), (doc) => {
+    const unSub = onSnapshot(doc(db, 'chats', data?.chatId), (doc) => {
       doc.exists() && setMessages(doc.data().messages)
     })
 
@@ -21,13 +20,11 @@ const Messages = () => {
 
   console.log(messages)
   return (
-    
-      <div className="messages">
-        {messages.map((m) => (
-          <Message message={m} key={m.id}></Message>
-        ))}
-      </div>
-  
+    <div className="text-gray-800">
+      {messages.map((message) => (
+        <Message message={message} key={message?.id}></Message>
+      ))}
+    </div>
   )
 }
 

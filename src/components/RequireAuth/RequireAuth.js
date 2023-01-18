@@ -1,13 +1,14 @@
 import React from 'react'
-import { useAuthState } from 'react-firebase-hooks/auth'
+import { useContext } from 'react'
 import { Navigate } from 'react-router-dom'
-import auth from '../../firebase.init'
+import { ContextAuth } from '../ContextApi/ContextAuth'
 
 const RequireAuth = ({ children }) => {
-  const [currentUser ] = useAuthState(auth);
+  const { currentUser } = useContext(ContextAuth)
+  console.log(currentUser)
 
-  if (!currentUser ) {
-    return <Navigate to="/Login" ></Navigate>
+  if (!currentUser) {
+    return <Navigate to="/Login"></Navigate>
   }
   return children
 }

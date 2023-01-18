@@ -9,15 +9,15 @@ import { ContextChatProvider } from './components/ContextApi/ContextChat'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
-  <BrowserRouter>
-    <ContextAuthProvider>
-      <ContextChatProvider>
+  <ContextAuthProvider>
+    <ContextChatProvider>
+      <BrowserRouter>
         <React.StrictMode>
           <App />
         </React.StrictMode>
-      </ContextChatProvider>
-    </ContextAuthProvider>
-  </BrowserRouter>,
+      </BrowserRouter>
+    </ContextChatProvider>
+  </ContextAuthProvider>,
 )
 
 reportWebVitals()

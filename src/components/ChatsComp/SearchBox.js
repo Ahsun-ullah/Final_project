@@ -9,11 +9,9 @@ import {
   updateDoc,
   serverTimestamp,
   getDoc,
-  getFirestore,
 } from 'firebase/firestore'
 import { ContextAuth } from '../ContextApi/ContextAuth'
-
-const db = getFirestore()
+import { db } from '../../firebase.init'
 
 const SearchBox = () => {
   const [username, setUsername] = useState('')
@@ -25,11 +23,12 @@ const SearchBox = () => {
   const handleSearch = async () => {
     const q = query(
       collection(db, 'users'),
-      where('displayName:firstName', '==', username),
+      where('displayName', '==', username),
     )
 
     try {
       const querySnapshot = await getDocs(q)
+
       querySnapshot.forEach((doc) => {
         setUser(doc.data())
       })
@@ -38,11 +37,12 @@ const SearchBox = () => {
     }
   }
 
-  const handleKey = (e) => {
-    e.code === 'Enter' && handleSearch()
+  const handleKey = (event) => {
+    event.code === 'Enter' && handleSearch()
   }
 
   const handleSelect = async () => {
+    //check whether the group(chats in firestore) exists, if not create
     const combinedId =
       currentUser.uid > user.uid
         ? currentUser.uid + user.uid
@@ -73,32 +73,43 @@ const SearchBox = () => {
           [combinedId + '.date']: serverTimestamp(),
         })
       }
-    } catch (err) {}
+    } catch (err) {
+      setErr(true)
+    }
 
     setUser(null)
     setUsername('')
   }
   return (
-    <div className="mb-4">
-      <div className="relative">
-        <input
-          type="text"
-          className=" block w-full pl-10 sm:text-sm border-gray-100 rounded-full py-1 border"
-          placeholder="Search"
-          onKeyDown={handleKey}
-          onChange={(e) => setUsername(e.target.value)}
-          value={username}
-        />
+    <div>
+      <div className="mb-4">
+        <div className="relative">
+          <input
+            type="text"
+            className=" block w-full pl-10 sm:text-sm border-gray-100 rounded-full py-1 mb-4 border"
+            placeholder="Search"
+            onKeyDown={handleKey}
+            onChange={(event) => setUsername(event.target.value)}
+            value={username}
+          />
+        </div>
       </div>
-      {err && <span>User not found!</span>}
+      {err && <span className="text-red-700 underline">User not found!</span>}
       {user && (
-        <div className="flex justify-start flex-row" onClick={handleSelect}>
-          <img className="h-10 w-10 rounded-full" src={user.photoURL} alt="" />
-          <div className="flex items-center justify-between">
+        <div
+          className="flex bg-blue-100 p-2 rounded hover:bg-gray-200 mb-4"
+          onClick={handleSelect}
+        >
+          <img
+            className="h-10 w-10 rounded-full mr-2"
+            src={user?.photoURL}
+            alt=""
+          />
+
+          <div className="flex items-center">
             <span className="text-sm font-bold text-red-600">
               {user?.displayName}
             </span>
-            <div className="text-gray-400 text-xs">12:35 AM</div>
           </div>
         </div>
       )}

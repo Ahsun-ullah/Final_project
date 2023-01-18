@@ -1,11 +1,13 @@
 import { signOut } from 'firebase/auth'
 import React from 'react'
-import { useAuthState } from 'react-firebase-hooks/auth'
+import { useContext } from 'react'
+//import { useAuthState } from 'react-firebase-hooks/auth'
 import { Link, useNavigate } from 'react-router-dom'
-import auth from '../../firebase.init'
+import { auth } from '../../firebase.init'
+import { ContextAuth } from '../ContextApi/ContextAuth'
 
-const Header = () => {
-  const [user] = useAuthState(auth)
+const Navbar = () => {
+  const { currentUser } = useContext(ContextAuth)
   const navigate = useNavigate()
 
   const handleLogout = () => {
@@ -95,15 +97,15 @@ const Header = () => {
             <li></li>
 
             <li className="text-transparent -mr-7 ">
-              {user ? (
+              {currentUser ? (
                 <div>
                   <img
                     className="h-12 w-12 rounded-full "
-                    src={user?.photoURL}
+                    src={currentUser?.photoURL}
                     alt=""
                   />
                   <p className="text-sm font-bold text-black">
-                    {user?.displayName}
+                    {currentUser?.displayName}
                   </p>
                   <div>
                     <button
@@ -133,4 +135,4 @@ const Header = () => {
   )
 }
 
-export default Header
+export default Navbar

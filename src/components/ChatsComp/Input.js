@@ -2,22 +2,15 @@ import React, { useContext, useState } from 'react'
 import {
   arrayUnion,
   doc,
-  getFirestore,
   serverTimestamp,
   Timestamp,
   updateDoc,
 } from 'firebase/firestore'
 import { v4 as uuid } from 'uuid'
-import {
-  getDownloadURL,
-  getStorage,
-  ref,
-  uploadBytesResumable,
-} from 'firebase/storage'
+import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
 import { ContextAuth } from '../ContextApi/ContextAuth'
 import { ContextChat } from '../ContextApi/ContextChat'
-
-const db = getFirestore()
+import { db, storage } from '../../firebase.init'
 
 const Input = () => {
   const [text, setText] = useState('')
@@ -28,22 +21,20 @@ const Input = () => {
 
   const handleSend = async () => {
     if (img) {
-      const storage = getStorage()
       const storageRef = ref(storage, uuid())
 
       const uploadTask = uploadBytesResumable(storageRef, img)
 
       uploadTask.on(
-        (error) => {
-          //TODO:Handle Error
-        },
+        (err) => {},
+
         () => {
           getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
-            await updateDoc(doc(db, 'chats', data.chatId), {
+            await updateDoc(doc(db, 'chats', data?.chatId), {
               messages: arrayUnion({
                 id: uuid(),
                 text,
-                senderId: currentUser.uid,
+                senderId: currentUser?.uid,
                 date: Timestamp.now(),
                 img: downloadURL,
               }),
@@ -52,28 +43,28 @@ const Input = () => {
         },
       )
     } else {
-      await updateDoc(doc(db, 'chats', data.chatId), {
+      await updateDoc(doc(db, 'chats', data?.chatId), {
         messages: arrayUnion({
           id: uuid(),
           text,
-          senderId: currentUser.uid,
+          senderId: currentUser?.uid,
           date: Timestamp.now(),
         }),
       })
     }
 
-    await updateDoc(doc(db, 'userChats', currentUser.uid), {
-      [data.chatId + '.lastMessage']: {
+    await updateDoc(doc(db, 'userChats', currentUser?.uid), {
+      [data?.chatId + '.lastMessage']: {
         text,
       },
-      [data.chatId + '.date']: serverTimestamp(),
+      [data?.chatId + '.date']: serverTimestamp(),
     })
 
-    await updateDoc(doc(db, 'userChats', data.user.uid), {
-      [data.chatId + '.lastMessage']: {
+    await updateDoc(doc(db, 'userChats', data?.user.uid), {
+      [data?.chatId + '.lastMessage']: {
         text,
       },
-      [data.chatId + '.date']: serverTimestamp(),
+      [data?.chatId + '.date']: serverTimestamp(),
     })
 
     setText('')
@@ -94,13 +85,12 @@ const Input = () => {
             className=" w-full focus:placeholder-gray-300 text-gray-500 pl-10 placeholder-gray-400 justify-center rounded-full py-3 border-gray-800 mr-4"
             type="text"
           />
-          <div type='button' className="flex justify-end my-4 border border-gray-300 rounded-full bg-slate-300 font-medium text-gray-500 px-4 hover:shadow-md hover:bg-gray-500
-           hover:text-gray-200">
-            <button
-              onClick={handleSend}
-            >
-              Send
-            </button>
+          <div
+            type="button"
+            className="flex justify-end my-4 border border-gray-300 rounded-full bg-slate-300 font-medium text-gray-500 px-4 hover:shadow-md hover:bg-gray-500
+           hover:text-gray-200"
+          >
+            <button onClick={handleSend}>Send</button>
           </div>
         </div>
       </div>

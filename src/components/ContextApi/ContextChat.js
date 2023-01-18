@@ -27,7 +27,7 @@ import { ContextAuth } from "./ContextAuth";
   
         default:
           return state;
-      }
+        }
     };
   
     const [state, dispatch] = useReducer(chatReducer, INITIAL_STATE);
@@ -37,4 +37,4 @@ import { ContextAuth } from "./ContextAuth";
         {children}
       </ContextChat.Provider>
     );
-  }; 
+  };  

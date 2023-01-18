@@ -18,39 +18,36 @@ function App() {
       <Header></Header>
 
       <Routes>
-        <Route
-          path="/"
-          element={
-            <RequireAuth>
-              <Home></Home>
-            </RequireAuth>
-          }
-        ></Route>
-        <Route
-          path="/Home"
-          element={
-            <RequireAuth>
-              <Home></Home>
-            </RequireAuth>
-          }
-        ></Route>
+        <Route path="/">
+          <Route
+            path="/Home"
+            element={
+              <RequireAuth>
+                <Home></Home>
+              </RequireAuth>
+            }
+          ></Route>
+          <Route
+            path="/UserSide"
+            index
+            element={
+              <RequireAuth>
+                <UserSide></UserSide>
+              </RequireAuth>
+            }
+          ></Route>
+          <Route path="/Login" element={<Login></Login>}></Route>
+          <Route path="/Register" element={<Register></Register>}></Route>
+        </Route>
+
         <Route path="/Profiles" element={<Profiles></Profiles>}></Route>
         <Route
           path="/CreateProfiles"
           element={<CreateProfiles></CreateProfiles>}
         ></Route>
-        <Route
-          path="/UserSide"
-          element={
-            <RequireAuth>
-              <UserSide></UserSide>
-            </RequireAuth>
-          }
-        ></Route>
         <Route path="/About" element={<About></About>}></Route>
         <Route path="/Contact" element={<Contact></Contact>}></Route>
-        <Route path="/Login" element={<Login></Login>}></Route>
-        <Route path="/Register" element={<Register></Register>}></Route>
+
         <Route
           path="/TermsAndConditions"
           element={<TermsAndConditions></TermsAndConditions>}
