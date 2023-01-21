@@ -82,7 +82,7 @@ const SearchBox = () => {
   }
   return (
     <div>
-      <div className="mb-4">
+      <div className="mb-4 border-b-2 border-gray-200">
         <div className="relative">
           <input
             type="text"

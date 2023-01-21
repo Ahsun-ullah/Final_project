@@ -112,7 +112,6 @@ const Register = () => {
                     type="text"
                     className="rounded-md p-[3px] pl-4 text-gray-800  focus:bg-gray-200 focus:text-black focus:outline-none"
                     placeholder="Last Name"
-                    required
                   />
                 </div>
               </div>
@@ -161,6 +160,7 @@ const Register = () => {
                     type="file"
                     id="file"
                     className="rounded-md p-[3px] pl-4 w-full text-gray-800 focus:bg-gray-400 bg-gray-200"
+                    required
                   />
                 </div>
               </div>

@@ -20,8 +20,8 @@ const Messages = () => {
 
   console.log(messages)
   return (
-    <div className="text-gray-800">
-      {messages.map((message) => (
+    <div>
+      {messages?.map((message) => (
         <Message message={message} key={message?.id}></Message>
       ))}
     </div>

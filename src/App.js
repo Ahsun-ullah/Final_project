@@ -21,6 +21,7 @@ function App() {
         <Route path="/">
           <Route
             path="/Home"
+            index
             element={
               <RequireAuth>
                 <Home></Home>

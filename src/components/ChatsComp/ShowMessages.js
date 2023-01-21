@@ -5,7 +5,6 @@ import Messages from './Messages'
 
 const ShowMessages = () => {
   const { data } = useContext(ContextChat)
-  console.log(data?.user?.displayName)
 
   return (
     <div className="flex-1 min-w-0 bg-zinc-100 xl:flex">
@@ -15,13 +14,13 @@ const ShowMessages = () => {
           <div className="flex items-center space-x-4">
             <img
               className="w-10 sm:w-12 h-10 sm:h-12 rounded-full cursor pointer"
-              src={data?.user?.photoURL}
+              src={data?.user.photoURL}
               alt=""
             />
             <div className="flex flex-col leading-tight">
               <div className="text-1xl mt-1 flex items-center">
                 <span className="text-gray-700 font-semibold mr-3">
-                  {data?.user?.displayName}
+                  {data?.user.displayName}
                 </span>
                 <span className="text-green-500 font-medium">online</span>
               </div>

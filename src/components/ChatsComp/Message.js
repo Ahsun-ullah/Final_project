@@ -10,35 +10,49 @@ const Message = ({ message }) => {
 
   useEffect(() => {
     ref.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [message])
-
+  }, [])
+  console.log(currentUser.uid)
+  console.log(data)
+  console.log(message)
   return (
-    <div
-      ref={ref}
-      className={`message ${message?.senderId === currentUser?.uid && 'owner'}`}
-    >
-      <div className="chat-message">
-        <div className="flex items-end ">
-          <div className="flex flex-col space-y-2 text-xs max-w-xs mx-2 order-2 items-start">
-            <div>
-              <p className="px-4 py-2 rounded-lg inline-block rounded-bl-none bg-gray-200 text-gray-600">
-                {message.text}
+    <div ref={ref}>
+      {message?.senderId === currentUser?.uid && (
+        <div className="flex justify-end mb-4 ">
+          <div className="flex justify-between text-xs max-w-xs mx-2">
+            <img
+              className="flex items-start ml-2 w-8 h-8 rounded-full order-1"
+              src={currentUser?.photoURL}
+              alt=""
+            />
+            <div className="flex-col gap-2">
+              <p className=" px-2 py-2 rounded-lg rounded-br-none bg-gray-200 text-gray-600">
+                {message?.text}
               </p>
               {message.img && <img src={message.img} alt="" />}
             </div>
           </div>
-          <img
-            className="w-6 h-6 rounded-full order-1"
-            src={
-              message?.senderId === currentUser?.uid
-                ? currentUser?.photoURL
-                : data?.user.photoURL
-            }
-            alt=""
-          />
-          <span>just now</span>
         </div>
-      </div>
+      )}
+      {/*left side message */}
+      {message?.senderId === data?.user.uid && (
+        <>
+          <div className="flex justify-start mb-4 border-r-red-500 ">
+            <div className="flex justify-start text-xs max-w-xs mx-2">
+              <img
+                className="ml-2 w-8 h-8 rounded-full order-1"
+                src={data?.user.photoURL}
+                alt=""
+              />
+              <div className="flex-col gap-2">
+                <p className=" px-2 py-2 rounded-lg rounded-bl-none bg-gray-200 text-gray-600">
+                  {message?.text}
+                </p>
+                {message.img && <img src={message.img} alt="" />}
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   )
 }

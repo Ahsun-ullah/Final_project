@@ -19,7 +19,7 @@ const ChatsNav = () => {
       <div className="flex-1 min-w-0">
         <a href="a" className="focus:outline-none">
           <span className="absolute inset-0"></span>
-          <p className="text-sm font-bold text-red-600">{user?.displayName}</p>
+          <p className="text-sm font-bold text-red-800">{user?.displayName}</p>
           <p className="text-sm text-gray-500 truncate">student</p>
         </a>
       </div>
