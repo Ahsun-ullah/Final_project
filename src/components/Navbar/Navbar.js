@@ -68,8 +68,8 @@ const Navbar = () => {
               </li>
             </ul>
           </div>
-          <Link className="btn btn-ghost normal-case text-xl text-slate-900">
-            Name
+          <Link className="btn btn-ghost normal-case font-serif text-xl text-slate-900">
+            Rap Messaging
           </Link>
         </div>
         <div className="navbar-center  lg:flex">

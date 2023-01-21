@@ -35,13 +35,10 @@ const Register = () => {
     try {
       // Create User
       const res = await createUserWithEmailAndPassword(email, password)
-      console.log(res?.user.uid)
-      console.log(res?.user)
-
       // Create a unique image name
       const date = new Date().getTime()
       const storageRef = ref(storage, `${firstName + date}`)
-      console.log('object')
+
       await uploadBytesResumable(storageRef, file).then(() => {
         getDownloadURL(storageRef).then(async (downloadURL) => {
           try {
@@ -52,7 +49,6 @@ const Register = () => {
               photoURL: downloadURL,
             })
             //create user on firebase
-            console.log('object')
             await setDoc(doc(db, 'users', res?.user.uid), {
               uid: res?.user.uid,
               displayName: firstName,

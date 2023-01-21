@@ -18,7 +18,7 @@ function App() {
       <Header></Header>
 
       <Routes>
-        <Route path="/">
+        <Route>
           <Route
             path="/Home"
             index
