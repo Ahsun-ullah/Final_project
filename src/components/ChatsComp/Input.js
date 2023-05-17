@@ -22,9 +22,12 @@ const Input = () => {
   const { data } = useContext(ContextChat)
 
   //send option
-  const handleSend = async (event) => {
-    event.preventDefault()
 
+  const handleKey = (event) => {
+    event.code === 'Enter' && handleSend()
+  }
+
+  const handleSend = async (event) => {
     if (img) {
       const storageRef = ref(storage, uuid())
 
@@ -71,8 +74,11 @@ const Input = () => {
   }
   return (
     <div className=" flex justify-between border-t-2 border-zinc-300 pt-4 ">
-      <img className="flex mr-2 mt-4 h-6 w-10" src={attach} alt="" />
+      <label htmlFor="file">
+        <img className="flex mr-2 mt-4 h-6 w-10" src={attach} alt="" />
+      </label>
       <input
+        onKeyDown={handleKey}
         onChange={(event) => setText(event.target.value)}
         placeholder="write something"
         className="border-gray-800 rounded-full w-full pl-5 h-14 text-gray-500 placeholder-gray-400 focus:placeholder-gray-300 "

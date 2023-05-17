@@ -1,16 +1,16 @@
-import { Route, Routes } from 'react-router-dom'
-import Home from './components/Home/Home'
-import Profiles from './components/Profiles/Profiles'
-import CreateProfiles from './components/CreateProfiles/CreateProfiles'
-import About from './components/About/About'
-import Contact from './components/Contact/Contact'
-import Login from './components/Login/Login'
-import Register from './components/Register/Register'
-import TermsAndConditions from './components/TermsAndConditions/TermsAndConditions'
-import Header from './components/Header/Header'
-import RequireAuth from './components/RequireAuth/RequireAuth'
-import Footer from './components/Footer/Footer'
-import UserSide from './components/ChatsComp/UserSide'
+import { Route, Routes } from "react-router-dom";
+import Home from "./components/Home/Home";
+import Profiles from "./components/Profiles/Profiles";
+import CreateProfiles from "./components/CreateProfiles/CreateProfiles";
+import About from "./components/About/About";
+import Contact from "./components/Contact/Contact";
+import Login from "./components/Login/Login";
+import Register from "./components/Register/Register";
+import TermsAndConditions from "./components/TermsAndConditions/TermsAndConditions";
+import Header from "./components/Header/Header";
+import RequireAuth from "./components/RequireAuth/RequireAuth";
+import Footer from "./components/Footer/Footer";
+import UserSide from "./components/ChatsComp/UserSide";
 
 function App() {
   return (
@@ -18,9 +18,8 @@ function App() {
       <Header></Header>
 
       <Routes>
-        <Route>
+        <Route path="/">
           <Route
-            path="/Home"
             index
             element={
               <RequireAuth>
@@ -30,7 +29,6 @@ function App() {
           ></Route>
           <Route
             path="/UserSide"
-            index
             element={
               <RequireAuth>
                 <UserSide></UserSide>
@@ -57,7 +55,7 @@ function App() {
 
       <Footer></Footer>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

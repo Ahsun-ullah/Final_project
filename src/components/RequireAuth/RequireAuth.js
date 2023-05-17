@@ -1,16 +1,14 @@
-import React from 'react'
-import { useContext } from 'react'
-import { Navigate } from 'react-router-dom'
-import { ContextAuth } from '../ContextApi/ContextAuth'
+import React from "react";
+import { useContext } from "react";
+import { Navigate } from "react-router-dom";
+import { ContextAuth } from "../ContextApi/ContextAuth";
 
 const RequireAuth = ({ children }) => {
-  const { currentUser } = useContext(ContextAuth)
-  console.log(currentUser)
-
+  const { currentUser } = useContext(ContextAuth);
   if (!currentUser) {
-    return <Navigate to="/Login"></Navigate>
+    return <Navigate to="/Login"></Navigate>;
   }
-  return children
-}
+  return children;
+};
 
-export default RequireAuth
+export default RequireAuth;

@@ -1,8 +1,9 @@
 import React, { useContext } from 'react'
 import { ContextChat } from '../ContextApi/ContextChat'
 
-const ChatInfoSide = () => {
+const ChatInfoSide = ({ message }) => {
   const { data } = useContext(ContextChat)
+  console.log(message)
   return (
     <div className="bg-gray-50 pr-4 sm:pr-5 lg:pr-8 lg:flex-shrink-0 lg:border-l lg:border-gray-200 xl:pr-0 hidden xl:block">
       <div className="h-full pl-6 py-6 lg:w-80">
@@ -25,14 +26,11 @@ const ChatInfoSide = () => {
             <h4>Attachment</h4>
           </div>
           <div className="grid grid-cols-4 gap-2">
-            <div className="cursor-pointer bg-gray-300 hover:bg-gray-400 h-14 w-full"></div>
-            <div className="cursor-pointer bg-gray-300 hover:bg-gray-400 h-14 w-full"></div>
-            <div className="cursor-pointer bg-gray-300 hover:bg-gray-400 h-14 w-full"></div>
-            <div className="cursor-pointer bg-gray-300 hover:bg-gray-400 h-14 w-full"></div>
-            <div className="cursor-pointer bg-gray-300 hover:bg-gray-400 h-14 w-full"></div>
-            <div className="cursor-pointer bg-gray-300 hover:bg-gray-400 h-14 w-full"></div>
-            <div className="cursor-pointer bg-gray-300 hover:bg-gray-400 h-14 w-full"></div>
-            <div className="cursor-pointer bg-gray-300 hover:bg-gray-400 h-14 w-full"></div>
+            {
+              <div className="cursor-pointer bg-gray-300 hover:bg-gray-400 h-14 w-full">
+                {message?.img && <img src={message?.img} alt="" />}
+              </div>
+            }
           </div>
         </div>
       </div>

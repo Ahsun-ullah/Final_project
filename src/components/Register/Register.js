@@ -1,98 +1,99 @@
-import React, { useState } from 'react'
-import registerImg from '../../Assets/registerImg.png'
-import { updateProfile } from 'firebase/auth'
-import { Link, useNavigate } from 'react-router-dom'
-import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth'
-import { doc, setDoc } from 'firebase/firestore'
-import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
-import { auth, db, storage } from '../../firebase.init'
+import React, { useState } from "react";
+import registerImg from "../../Assets/registerImg.png";
+import { updateProfile } from "firebase/auth";
+import { Link, useNavigate } from "react-router-dom";
+import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { doc, setDoc } from "firebase/firestore";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { auth, db, storage } from "../../firebase.init";
 
 const Register = () => {
-  const [err, setErr] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const navigate = useNavigate()
+  const [err, setErr] = useState(false);
+  const navigate = useNavigate();
 
-  const [createUserWithEmailAndPassword] = useCreateUserWithEmailAndPassword(
-    auth,
-  )
+  const [createUserWithEmailAndPassword] =
+    useCreateUserWithEmailAndPassword(auth);
 
   const handleCreateUser = async (event) => {
-    setLoading(true)
-    event.preventDefault()
-    const firstName = event.target[0].value
-    const email = event.target[2].value
-    const password = event.target[3].value
-    const confirmPassword = event.target[4].value
-    const file = event.target[6].files[0]
+    event.preventDefault();
+
+    const firstName = event.target[0].value;
+    const email = event.target[2].value;
+    const password = event.target[3].value;
+    const confirmPassword = event.target[4].value;
+    const file = event.target[6].files[0];
 
     if (password !== confirmPassword) {
-      err(<span className="text-red-700 underline">Something went wrong</span>)
-      return
+      <span className="text-red-700 underline">Something went wrong</span>;
     }
-
-    navigate('/Login')
 
     try {
-      // Create User
-      const res = await createUserWithEmailAndPassword(email, password)
+      const res = await createUserWithEmailAndPassword(email, password);
+
       // Create a unique image name
-      const date = new Date().getTime()
-      const storageRef = ref(storage, `${firstName + date}`)
+      const date = new Date().getTime();
+      const storageRef = ref(storage, `${firstName + date}`);
 
-      await uploadBytesResumable(storageRef, file).then(() => {
-        getDownloadURL(storageRef).then(async (downloadURL) => {
-          try {
-            //Update profile
+      const uploadTask = uploadBytesResumable(storageRef, file);
 
-            await updateProfile(res?.user, {
-              displayName: firstName,
-              photoURL: downloadURL,
-            })
-            //create user on firebase
-            await setDoc(doc(db, 'users', res?.user.uid), {
-              uid: res?.user.uid,
-              displayName: firstName,
-              email,
-              photoURL: downloadURL,
-            })
-            //create empty user chats on firestore
-            await setDoc(doc(db, 'userChats', res?.user.uid), {})
-            navigate('/Login')
-          } catch (err) {
-            console.log(err)
-            setErr(true)
-            setLoading(false)
-          }
-        })
-      })
+      // register all data
+      uploadTask.on(
+        (err) => {
+          setErr(true);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+            console.log("File available at", downloadURL);
+            try {
+              //Update profile
+              await updateProfile(res?.user, {
+                displayName: firstName,
+                photoURL: downloadURL,
+              });
+              //create user on firebase
+              await setDoc(doc(db, "users", res?.user.uid), {
+                uid: res?.user.uid,
+                displayName: firstName,
+                email: email,
+                photoURL: downloadURL,
+              });
+              //create empty user chats on firestore
+              await setDoc(doc(db, "userChats", res?.user.uid), {});
+              navigate("/Login");
+            } catch (err) {
+              setErr(true);
+            }
+          });
+        }
+      );
+      navigate("/Login");
     } catch (err) {
-      setErr(true)
-      setLoading(false)
+      setErr(true);
     }
-  }
+  };
 
   return (
     <div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 h-full w-full ">
-        <div className="flex justify-center sm:block bg-gray-200 rounded-sm">
+      <div className="grid h-full w-full grid-cols-1 sm:grid-cols-2 ">
+        <div className="flex justify-center rounded-sm bg-gray-200 sm:block">
           <img
-            className="max-h-full w-100 object-cover"
+            className="w-100 max-h-full object-cover"
             src={registerImg}
             alt=""
           />
         </div>
 
-        <div className="flex flex-col justify-center h-full w-full bg-gray-900">
-          <p className="font-bold text-3xl mb-9 text-current text-center">
+        <div className="flex h-full w-full flex-col justify-center bg-gray-900">
+          <p className="mb-9 text-center text-3xl font-bold text-current">
             Welcome to SAL! Please Register.
           </p>
 
-          <div className="space-y-2 space-x-0 bg-blue-300 mx-auto p-10 rounded-2xl ">
+          <div className="mx-auto space-y-2 space-x-0 rounded-2xl bg-blue-300 p-10 ">
             <form onSubmit={handleCreateUser}>
-              <h2 className="text-3xl font-bold text-center text-gray-800 -mt-4 mb-2">
+              <h2 className="-mt-4 mb-2 text-center text-3xl font-bold text-gray-800">
                 Register
               </h2>
-              <div className="grid gap-8 grid-cols-2">
+              <div className="grid grid-cols-2 gap-8">
                 <div className="flex flex-col text-gray-800 ">
                   <label className="font-bold">First Name:</label>
                   <input
@@ -117,7 +118,7 @@ const Register = () => {
                   <label className="font-bold">Email:</label>
                   <input
                     type="email"
-                    className="rounded-md p-[3px] pl-4 w-full text-gray-800  focus:bg-gray-200 focus:outline-none"
+                    className="w-full rounded-md p-[3px] pl-4 text-gray-800  focus:bg-gray-200 focus:outline-none"
                     placeholder="Email"
                     required
                   />
@@ -126,7 +127,7 @@ const Register = () => {
                   <label className="font-bold">Password:</label>
                   <input
                     type="password"
-                    className="rounded-md p-[3px] pl-4 w-full text-gray-800  focus:bg-gray-200 focus:outline-none"
+                    className="w-full rounded-md p-[3px] pl-4 text-gray-800  focus:bg-gray-200 focus:outline-none"
                     placeholder="Password"
                     required
                   />
@@ -135,7 +136,7 @@ const Register = () => {
                   <label className="font-bold">Confirm Password:</label>
                   <input
                     type="password"
-                    className="rounded-md p-[3px] pl-4 w-full text-gray-800  focus:bg-gray-200 focus:outline-none"
+                    className="w-full rounded-md p-[3px] pl-4 text-gray-800  focus:bg-gray-200 focus:outline-none"
                     placeholder="Confirm Password"
                     required
                   />
@@ -144,7 +145,7 @@ const Register = () => {
                   <label className="font-bold">ID:</label>
                   <input
                     type="number"
-                    className="rounded-md p-[3px] pl-4 w-full text-gray-800  focus:bg-gray-200 focus:outline-none"
+                    className="w-full rounded-md p-[3px] pl-4 text-gray-800  focus:bg-gray-200 focus:outline-none"
                     placeholder="Submit your id"
                   />
                 </div>
@@ -155,7 +156,7 @@ const Register = () => {
                   <input
                     type="file"
                     id="file"
-                    className="rounded-md p-[3px] pl-4 w-full text-gray-800 focus:bg-gray-400 bg-gray-200"
+                    className="w-full rounded-md bg-gray-200 p-[3px] pl-4 text-gray-800 focus:bg-gray-400"
                     required
                   />
                 </div>
@@ -163,29 +164,29 @@ const Register = () => {
 
               <div className="flex justify-center py-4">
                 <input type="checkbox" className="mr-2 mt-[1px]" required />
-                <p className="flex items-center text-gray-800 font-black ">
+                <p className="flex items-center font-black text-gray-800 ">
                   I read and agree to
-                  <span className="text-blue-600 pl-2 underline">
+                  <span className="pl-2 text-blue-600 underline">
                     <Link to="/TermsAndConditions">Terms & Conditions.</Link>
                   </span>
                 </p>
               </div>
-              {loading && <span className="text-gray-900 underline"></span>}
+
               {err && (
                 <span className="text-red-700 underline">
                   Something went wrong
                 </span>
               )}
               <div className="flex justify-center">
-                <button className="bg-gray-800 rounded-2xl p-1 text-gray-300 mb-4 w-full shadow-md shadow-blue-500/10 hover:shadow-gray-800/60 font-semibold">
+                <button className="mb-4 w-full rounded-2xl bg-gray-800 p-1 font-semibold text-gray-300 shadow-md shadow-blue-500/10 hover:shadow-gray-800/60">
                   <span>Create Account</span>
                 </button>
               </div>
             </form>
             <div className="flex justify-center">
-              <p className="text-gray-800 font-black">
+              <p className="font-black text-gray-800">
                 Already have an account ?
-                <span className="text-blue-600 pl-2 underline">
+                <span className="pl-2 text-blue-600 underline">
                   <Link to="/Login">Please LogIn</Link>
                 </span>
               </p>
@@ -194,7 +195,7 @@ const Register = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Register
+export default Register;
