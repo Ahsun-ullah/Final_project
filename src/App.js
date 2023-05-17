@@ -39,17 +39,46 @@ function App() {
           <Route path="/Register" element={<Register></Register>}></Route>
         </Route>
 
-        <Route path="/Profiles" element={<Profiles></Profiles>}></Route>
+        <Route
+          path="/Profiles"
+          element={
+            <RequireAuth>
+              <UserSide></UserSide>
+            </RequireAuth>
+          }
+        ></Route>
         <Route
           path="/CreateProfiles"
-          element={<CreateProfiles></CreateProfiles>}
+          element={
+            <RequireAuth>
+              <UserSide></UserSide>
+            </RequireAuth>
+          }
         ></Route>
-        <Route path="/About" element={<About></About>}></Route>
-        <Route path="/Contact" element={<Contact></Contact>}></Route>
+        <Route
+          path="/About"
+          element={
+            <RequireAuth>
+              <UserSide></UserSide>
+            </RequireAuth>
+          }
+        ></Route>
+        <Route
+          path="/Contact"
+          element={
+            <RequireAuth>
+              <UserSide></UserSide>
+            </RequireAuth>
+          }
+        ></Route>
 
         <Route
           path="/TermsAndConditions"
-          element={<TermsAndConditions></TermsAndConditions>}
+          element={
+            <RequireAuth>
+              <UserSide></UserSide>
+            </RequireAuth>
+          }
         ></Route>
       </Routes>
 
