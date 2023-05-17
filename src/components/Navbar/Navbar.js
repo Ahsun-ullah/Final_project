@@ -8,7 +8,7 @@ import { ContextAuth } from "../ContextApi/ContextAuth";
 
 const Navbar = () => {
   const { currentUser } = useContext(ContextAuth);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     signOut(auth);
@@ -32,27 +32,27 @@ const Navbar = () => {
               className="dropdown-content menu rounded-box menu-compact mt-3 w-52 p-2 text-black shadow "
             >
               <li>
-                <Link className="text-xl text-black" to="/">
+                <Link className="text-xl text-black" to="/UserSide">
                   Home
                 </Link>
               </li>
               <li>
-                <Link className="text-xl text-black" to="/Profiles">
+                <Link className="text-xl text-black" to="/UserSide">
                   Profiles
                 </Link>
               </li>
               <li>
-                <Link className="text-xl text-black" to="/CreateProfiles">
+                <Link className="text-xl text-black" to="/UserSide">
                   CreateProfiles
                 </Link>
               </li>
               <li>
-                <Link className="text-xl text-black" to="/About">
+                <Link className="text-xl text-black" to="/UserSide">
                   About Us
                 </Link>
               </li>
               <li>
-                <Link className="text-xl text-black" to="/Contact">
+                <Link className="text-xl text-black" to="/UserSide">
                   Contact Us
                 </Link>
               </li>
@@ -62,7 +62,7 @@ const Navbar = () => {
                 </Link>
               </li>
               <li>
-                <Link className="text-xl text-black" to="/TermsAndConditions">
+                <Link className="text-xl text-black" to="/UserSide">
                   T&C
                 </Link>
               </li>
@@ -75,17 +75,17 @@ const Navbar = () => {
         <div className="navbar-center  lg:flex">
           <ul className="menu menu-horizontal">
             <li>
-              <Link className="text-xl text-black" to="/Home">
+              <Link className="text-xl text-black" to="/UserSide">
                 Home
               </Link>
             </li>
             <li>
-              <Link className="text-xl text-black" to="/Profiles">
+              <Link className="text-xl text-black" to="/UserSide">
                 Profiles
               </Link>
             </li>
             <li>
-              <Link className="text-xl text-black" to="/CreateProfiles">
+              <Link className="text-xl text-black" to="/UserSide">
                 CreateProfiles
               </Link>
             </li>
